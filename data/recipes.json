@@ -1,0 +1,74 @@
+{
+  "recipes": {
+    "Boiled Noodles": {
+      "ingredients": {
+        "Instant Noodles": 1
+      },
+      "effects": {
+        "satiety": 30
+      },
+      "stamina_cost": 5,
+      "description": "Quick and simple"
+    },
+    "Noodles with Egg": {
+      "ingredients": {
+        "Instant Noodles": 1,
+        "Egg": 1
+      },
+      "effects": {
+        "satiety": 40,
+        "health": 3
+      },
+      "stamina_cost": 8,
+      "description": "More nutritious with egg"
+    },
+    "Tomato Scrambled Eggs": {
+      "ingredients": {
+        "Tomato": 1,
+        "Egg": 1
+      },
+      "effects": {
+        "satiety": 35,
+        "mood": 1,
+        "health": 5
+      },
+      "stamina_cost": 12,
+      "description": "Classic home cooking"
+    },
+    "Clay Pot Rice": {
+      "ingredients": {
+        "Rice": 1,
+        "Pork": 1
+      },
+      "effects": {
+        "satiety": 50,
+        "mood": 1,
+        "health": 3
+      },
+      "stamina_cost": 15,
+      "description": "Fragrant clay pot rice"
+    },
+    "Eat Bento A": {
+      "ingredients": {
+        "Bento A": 1
+      },
+      "effects": {
+        "satiety": 30,
+        "health": 3
+      },
+      "stamina_cost": 2,
+      "description": "Ready to eat"
+    },
+    "Eat Bento B": {
+      "ingredients": {
+        "Bento B": 1
+      },
+      "effects": {
+        "satiety": 40,
+        "health": 4
+      },
+      "stamina_cost": 2,
+      "description": "Deluxe ready-to-eat"
+    }
+  }
+}

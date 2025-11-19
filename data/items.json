@@ -1,0 +1,57 @@
+{
+  "ingredients": {
+    "Instant Noodles": {
+      "price": 5,
+      "location": "Market",
+      "shelf_life": 30,
+      "description": "Cheap instant food"
+    },
+    "Egg": {
+      "price": 2,
+      "location": "Market",
+      "shelf_life": 7,
+      "description": "Fresh eggs"
+    },
+    "Tomato": {
+      "price": 4,
+      "location": "Market",
+      "shelf_life": 5,
+      "description": "Red tomatoes"
+    },
+    "Rice": {
+      "price": 3,
+      "location": "Market",
+      "shelf_life": 30,
+      "description": "Cooked rice"
+    },
+    "Pork": {
+      "price": 15,
+      "location": "Market",
+      "shelf_life": 3,
+      "description": "Fresh pork"
+    },
+    "Bento A": {
+      "price": 20,
+      "location": "Convenience Store",
+      "shelf_life": 3,
+      "description": "Regular bento"
+    },
+    "Bento B": {
+      "price": 30,
+      "location": "Convenience Store",
+      "shelf_life": 3,
+      "description": "Deluxe bento"
+    }
+  },
+  "restaurant_menu": {
+    "Roast Goose Rice": {
+      "price": 40,
+      "effects": {
+        "satiety": 50,
+        "mood": 2,
+        "health": 5
+      },
+      "description": "Delicious roast goose rice"
+    }
+  }
+}

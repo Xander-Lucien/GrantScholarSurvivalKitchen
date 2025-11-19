@@ -1,0 +1,172 @@
+{
+  "fixed_events": {
+    "12": {
+      "name": "Graduation Dinner",
+      "period": "Daytime",
+      "description": "Today is the graduation dinner organized by the department. Everyone is happy!",
+      "options": [],
+      "auto_result": true,
+      "results": {
+        "base": {
+          "satiety": 50,
+          "message": "Had a great feast!"
+        },
+        "mood_bonus": {
+          "condition": "mood >= 4",
+          "satiety": 10
+        }
+      }
+    },
+    "24": {
+      "name": "Christmas Eve",
+      "period": "Daytime",
+      "description": "It's Christmas Eve! Do you want to go out with friends to celebrate?",
+      "options": [
+        {
+          "text": "Go out with friends",
+          "id": "go_out"
+        },
+        {
+          "text": "Stay home",
+          "id": "stay_home"
+        }
+      ],
+      "auto_result": false,
+      "results": {
+        "go_out": {
+          "stamina": -20,
+          "mood_set": 5,
+          "message": "Had a wonderful night with friends!"
+        },
+        "stay_home": {
+          "stamina": 20,
+          "message": "Had a good rest at home."
+        }
+      }
+    }
+  },
+  "condition_events": {
+    "family_care": {
+      "name": "Family Care",
+      "trigger": "low_mood_days >= 3",
+      "period": "Evening",
+      "description": "Your family called to check on you. Their concern warms your heart.",
+      "options": [],
+      "result": {
+        "mood": 2
+      }
+    }
+  },
+  "random_events": {
+    "Morning": [
+      {
+        "name": "Overslept",
+        "type": "bad",
+        "description": "Oh no! Your alarm didn't go off and you overslept!",
+        "options": [],
+        "result": {
+          "stamina": -10,
+          "mood": -1
+        }
+      },
+      {
+        "name": "Sweet Dream",
+        "type": "good",
+        "description": "You had a wonderful dream. You feel refreshed!",
+        "options": [],
+        "result": {
+          "stamina": 5,
+          "mood": 1
+        }
+      },
+      {
+        "name": "Normal Morning",
+        "type": "neutral",
+        "description": "Just another ordinary day.",
+        "options": [],
+        "result": {}
+      }
+    ],
+    "Daytime": [
+      {
+        "name": "Storm Warning",
+        "type": "neutral",
+        "description": "Typhoon signal No.8 issued! Heavy rain and strong winds outside.",
+        "options": [
+          {
+            "text": "Lock doors and windows",
+            "id": "lock"
+          },
+          {
+            "text": "Go outside",
+            "id": "go_out"
+          }
+        ],
+        "results": {
+          "lock": {
+            "stamina": -10,
+            "mood": 1
+          },
+          "go_out": [
+            {
+              "probability": 0.3,
+              "result": {
+                "money": -10,
+                "item": "Bento A"
+              }
+            },
+            {
+              "probability": 0.7,
+              "result": {
+                "stamina": -20,
+                "health": -5,
+                "mood": -1
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "Supervisor Meeting",
+        "type": "bad",
+        "description": "Your supervisor wants to talk about your thesis progress...",
+        "options": [],
+        "result": {
+          "stamina": -15,
+          "mood": -1
+        }
+      },
+      {
+        "name": "Package Delivery",
+        "type": "good",
+        "description": "You received an unexpected package! Snacks from a friend.",
+        "options": [],
+        "result": {
+          "mood": 1,
+          "satiety": 10
+        }
+      }
+    ],
+    "Evening": [
+      {
+        "name": "Watch Movie",
+        "type": "good",
+        "description": "You watched a great movie online. Feeling good!",
+        "options": [],
+        "result": {
+          "mood": 1,
+          "stamina": -5
+        }
+      },
+      {
+        "name": "Thesis Anxiety",
+        "type": "bad",
+        "description": "Suddenly remembered how much work is left on your thesis...",
+        "options": [],
+        "result": {
+          "mood": -1
+        }
+      }
+    ]
+  }
+}

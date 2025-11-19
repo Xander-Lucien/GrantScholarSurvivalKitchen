@@ -1,0 +1,27 @@
+{
+  "window": {
+    "width": 1024,
+    "height": 768,
+    "fps": 60,
+    "title": "Grant Scholar's Survival Kitchen"
+  },
+  "colors": {
+    "white": [255, 255, 255],
+    "black": [0, 0, 0],
+    "gray": [128, 128, 128],
+    "light_gray": [200, 200, 200],
+    "red": [220, 50, 50],
+    "green": [50, 200, 50],
+    "blue": [50, 100, 200],
+    "yellow": [255, 215, 0],
+    "orange": [255, 165, 0]
+  },
+  "game": {
+    "total_days": 30,
+    "start_year": 2025,
+    "start_month": 12,
+    "start_day": 2,
+    "time_periods": ["Morning", "Daytime", "Shopping", "Cooking", "Evening", "Sleep"],
+    "satiety_decay_rate": 8
+  }
+}

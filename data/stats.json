@@ -1,0 +1,32 @@
+{
+  "initial_values": {
+    "stamina": 100,
+    "mood": 3,
+    "health": 100,
+    "satiety": 80,
+    "money": 1500
+  },
+  "stat_ranges": {
+    "min": 0,
+    "max": 100
+  },
+  "mood_levels": {
+    "1": "Desperate",
+    "2": "Depressed",
+    "3": "Calm",
+    "4": "Happy",
+    "5": "Ecstatic"
+  },
+  "sleep_recovery": {
+    "Early Sleep": 60,
+    "Normal Sleep": 50,
+    "Stay Up Late": 30
+  },
+  "warning_thresholds": {
+    "stamina_low": 30,
+    "health_low": 40,
+    "satiety_low": 30,
+    "money_low": 100,
+    "mood_low": 2
+  }
+}

@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 """
-主程序入口
+Main program entry point
 """
 
-from game import Game
+from src.game import Game
 
 
 def main():
-    """主函数"""
+    """Main function"""
     game = Game()
     game.run()
 
