@@ -1,0 +1,57 @@
+{
+  "preload": {
+    "images": [],
+    "sounds": [],
+    "fonts": []
+  },
+  "ui": {
+    "button": "ui/button.png",
+    "button_hover": "ui/button_hover.png",
+    "panel": "ui/panel.png"
+  },
+  "characters": {
+    "player": "characters/player.png"
+  },
+  "items": {
+    "instant_noodles": "items/instant_noodles.png",
+    "egg": "items/egg.png",
+    "tomato": "items/tomato.png",
+    "rice": "items/rice.png",
+    "pork": "items/pork.png",
+    "bento_a": "items/bento_a.png",
+    "bento_b": "items/bento_b.png"
+  },
+  "backgrounds": {
+    "dorm": "backgrounds/dorm.png",
+    "market": "backgrounds/market.png",
+    "convenience_store": "backgrounds/convenience_store.png",
+    "kitchen": "backgrounds/kitchen.png"
+  },
+  "sounds": {
+    "bgm": {
+      "main_menu": "bgm/main_menu.mp3",
+      "gameplay": "bgm/gameplay.mp3"
+    },
+    "sfx": {
+      "click": "sfx/click.wav",
+      "purchase": "sfx/purchase.wav",
+      "cooking": "sfx/cooking.wav",
+      "notification": "sfx/notification.wav"
+    }
+  },
+  "fonts": {
+    "default": null,
+    "title": {
+      "path": "title_font.ttf",
+      "size": 48
+    },
+    "normal": {
+      "path": "game_font.ttf",
+      "size": 24
+    },
+    "small": {
+      "path": "game_font.ttf",
+      "size": 18
+    }
+  }
+}

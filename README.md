@@ -12,6 +12,7 @@ Grant Scholar has only 30 days until graduation, but only $1500 left for living 
 
 ### 🎯 专业的工程结构
 - **数据驱动设计**: 所有游戏配置使用JSON文件，便于策划调整数值
+- **资产管理系统**: 完整的美术资源加载和缓存系统，支持图片、音频、字体
 - **模块化架构**: 代码按功能分层组织，易于维护和扩展
 - **单例数据加载器**: 统一管理所有配置文件的加载和访问
 - **标准Python包**: 包含setup.py、pyproject.toml等标准配置
@@ -26,14 +27,20 @@ Grant Scholar has only 30 days until graduation, but only $1500 left for living 
 
 ```
 GrantScholarSurvivalKitchen/
+├── assets/                # 美术资源（图片、音频、字体）
+│   ├── images/           # 图片资源
+│   ├── sounds/           # 音频资源
+│   └── fonts/            # 字体文件
 ├── data/                  # 游戏配置数据（JSON格式）
 │   ├── config.json       # 窗口、颜色、游戏设置
 │   ├── stats.json        # 玩家属性配置
 │   ├── items.json        # 食材和餐厅菜单
 │   ├── recipes.json      # 烹饪食谱
-│   └── events.json       # 游戏事件
+│   ├── events.json       # 游戏事件
+│   └── assets.json       # 资产路径配置
 ├── src/                   # 源代码
 │   ├── data_loader.py    # 数据加载器
+│   ├── asset_loader.py   # 资产加载器
 │   ├── config.py         # 配置常量
 │   ├── player.py         # 玩家类
 │   ├── events.py         # 事件系统
@@ -45,6 +52,40 @@ GrantScholarSurvivalKitchen/
 ```
 
 详细说明请查看 [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md)
+
+## 美术资源 / Art Assets
+
+### 资源目录结构
+
+游戏支持完整的美术资源系统，资源文件存放在 `assets/` 目录：
+
+- `assets/images/` - 图片资源（UI、角色、物品、背景）
+- `assets/sounds/` - 音频资源（背景音乐、音效）
+- `assets/fonts/` - 字体文件
+
+### 添加资源 / Adding Assets
+
+1. 将图片文件放入 `assets/images/` 相应子目录
+2. 将音频文件放入 `assets/sounds/` 相应子目录
+3. 将字体文件放入 `assets/fonts/` 目录
+
+代码中使用资源：
+```python
+from src.asset_loader import asset_loader
+
+# 加载图片
+image = asset_loader.load_image('items/egg.png')
+
+# 加载音效
+sound = asset_loader.load_sound('sfx/click.wav')
+
+# 加载字体
+font = asset_loader.load_font('game_font.ttf', 24)
+```
+
+详细指南请查看：
+- [assets/README.md](assets/README.md) - 资源目录说明
+- [ASSET_GUIDE.md](ASSET_GUIDE.md) - 完整使用指南
 
 ## 策划人员快速上手 / Quick Start for Game Designers
 

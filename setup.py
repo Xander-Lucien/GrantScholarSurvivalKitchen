@@ -11,7 +11,12 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     package_data={
-        "": ["data/*.json"],
+        "": [
+            "data/*.json",
+            "assets/images/**/*",
+            "assets/sounds/**/*",
+            "assets/fonts/**/*",
+        ],
     },
     classifiers=[
         "Development Status :: 4 - Beta",

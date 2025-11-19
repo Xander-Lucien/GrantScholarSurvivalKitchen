@@ -6,16 +6,29 @@ This document describes the structure and organization of the Grant Scholar's Su
 
 ```
 GrantScholarSurvivalKitchen/
+├── assets/                    # Game art and multimedia assets
+│   ├── images/               # Image assets
+│   │   ├── ui/              # UI elements, buttons, icons
+│   │   ├── characters/      # Character sprites
+│   │   ├── items/           # Food items, ingredients
+│   │   └── backgrounds/     # Scene backgrounds
+│   ├── sounds/              # Audio assets
+│   │   ├── bgm/            # Background music
+│   │   └── sfx/            # Sound effects
+│   └── fonts/               # Font files (.ttf, .otf)
+│
 ├── data/                      # Game configuration data (JSON)
 │   ├── config.json           # Window, colors, game settings
 │   ├── stats.json            # Player attributes configuration
 │   ├── items.json            # Ingredients and restaurant menu
 │   ├── recipes.json          # Cooking recipes
-│   └── events.json           # Game events data
+│   ├── events.json           # Game events data
+│   └── assets.json           # Asset paths and preload configuration
 │
 ├── src/                       # Source code
 │   ├── __init__.py           # Package initialization
 │   ├── data_loader.py        # JSON data loader (Singleton)
+│   ├── asset_loader.py       # Asset loader with caching (Singleton)
 │   ├── config.py             # Configuration constants
 │   ├── player.py             # Player class
 │   ├── events.py             # Event system
@@ -44,6 +57,21 @@ All game configuration is stored in JSON format for easy modification by designe
 - **items.json**: Ingredients (with price, location, shelf life), restaurant menu
 - **recipes.json**: Cooking recipes (ingredients, effects, stamina cost)
 - **events.json**: Fixed events, condition events, random events
+- **assets.json**: Asset paths and preload configuration
+
+### Asset Layer (`assets/`)
+
+All game art and multimedia assets are organized by type:
+
+- **images/**: Image assets (sprites, UI, backgrounds)
+  - `ui/`: UI elements, buttons, icons
+  - `characters/`: Character sprites
+  - `items/`: Food items, ingredient images
+  - `backgrounds/`: Scene backgrounds
+- **sounds/**: Audio assets
+  - `bgm/`: Background music files
+  - `sfx/`: Sound effects
+- **fonts/**: Font files (.ttf, .otf)
 
 ### Core Layer (`src/`)
 
@@ -52,6 +80,17 @@ All game configuration is stored in JSON format for easy modification by designe
 - Loads all JSON configuration files at startup
 - Provides unified interface for accessing configuration data
 - Supports nested key access: `data_loader.get("config", "window", "width")`
+
+#### `asset_loader.py`
+- Singleton pattern asset loader with caching
+- Supports images, sounds, and fonts
+- Automatic format conversion and error handling
+- Memory-efficient caching system
+- Preload support for better performance
+- Usage examples:
+  - `asset_loader.load_image('ui/button.png')`
+  - `asset_loader.load_sound('sfx/click.wav')`
+  - `asset_loader.load_font('game_font.ttf', 24)`
 
 #### `config.py`
 - Loads configuration from JSON files

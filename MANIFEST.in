@@ -3,5 +3,8 @@ include LICENSE
 include requirements.txt
 recursive-include data *.json
 recursive-include src *.py
+recursive-include assets *.png *.jpg *.jpeg *.gif *.bmp
+recursive-include assets *.wav *.mp3 *.ogg
+recursive-include assets *.ttf *.otf
 global-exclude __pycache__
 global-exclude *.py[cod]
