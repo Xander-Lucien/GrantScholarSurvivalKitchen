@@ -39,7 +39,7 @@ class Game:
         # Start game
         self.start_new_day()
     
-    def start_new_day(self):
+    def start_new_day(self, data=None):
         """Start new day"""
         self.current_period = 0
         
@@ -52,7 +52,7 @@ class Game:
         # Morning period
         self.process_morning()
     
-    def process_morning(self):
+    def process_morning(self, data=None):
         """Process morning period"""
         # Decay satiety
         self.player.decay_satiety()
@@ -71,7 +71,7 @@ class Game:
         else:
             self.show_message(summary, [{"text": "Continue", "callback": self.next_period}])
     
-    def process_daytime(self):
+    def process_daytime(self, data=None):
         """Process daytime period"""
         # Decay satiety
         self.player.decay_satiety()
@@ -90,7 +90,7 @@ class Game:
             else:
                 self.show_message("A peaceful day...", [{"text": "Continue", "callback": self.next_period}])
     
-    def process_shopping(self):
+    def process_shopping(self, data=None):
         """Process shopping period"""
         self.player.decay_satiety()
         
@@ -104,14 +104,14 @@ class Game:
         self.main_scene.set_content(text, buttons)
         self.current_scene = self.main_scene
     
-    def process_cooking(self):
+    def process_cooking(self, data=None):
         """Process cooking period"""
         self.player.decay_satiety()
         
         # Switch to kitchen scene
         self.current_scene = self.kitchen_scene
     
-    def process_night(self):
+    def process_night(self, data=None):
         """Process evening period"""
         self.player.decay_satiety()
         
