@@ -23,6 +23,12 @@ class Button:
     
     def draw(self, surface):
         """绘制按钮"""
+        # 绘制阴影
+        shadow_rect = self.rect.copy()
+        shadow_rect.x += 4
+        shadow_rect.y += 4
+        pygame.draw.rect(surface, (50, 50, 50), shadow_rect, border_radius=5)
+        
         color = self.hover_color if self.is_hovered else self.color
         pygame.draw.rect(surface, color, self.rect, border_radius=5)
         pygame.draw.rect(surface, BLACK, self.rect, 2, border_radius=5)

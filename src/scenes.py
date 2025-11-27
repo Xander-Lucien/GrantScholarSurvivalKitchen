@@ -7,6 +7,7 @@ Contains regular scene, shopping scene, kitchen scene
 import pygame
 from .config import *
 from .ui import *
+from .backgrounds import *
 
 
 class Scene:
@@ -35,25 +36,30 @@ class MainScene(Scene):
     def __init__(self, game):
         super().__init__(game)
         self.status_bars = self._create_status_bars()
-        self.text_box = TextBox(50, 150, WINDOW_WIDTH - 100, 200, "", font_size=24)
+        # 对话框移到界面下方
+        self.text_box = TextBox(50, WINDOW_HEIGHT - 220, WINDOW_WIDTH - 100, 150, "", font_size=24)
         self.buttons = []
         self.current_text = ""
         self.event_data = None
     
     def _create_status_bars(self):
         """Create status bars"""
+        # 五种属性移到左上角垂直排布
         bars = []
-        y_start = 20
-        x_start = 50
-        bar_width = 180
-        bar_height = 30
-        spacing = 200
+        x_pos = 20  # 左侧位置
+        y_start = 20  # 起始Y坐标
+        bar_width = 250  # 状态栏宽度
+        bar_height = 35  # 状态栏高度
+        spacing = 45  # 垂直间距
         
-        bars.append(StatusBar(x_start, y_start, bar_width, bar_height, 
+        # 体力
+        bars.append(StatusBar(x_pos, y_start, bar_width, bar_height, 
                               "Stamina", self.player.stamina, STAT_MAX, GREEN))
-        bars.append(StatusBar(x_start + spacing, y_start, bar_width, bar_height, 
+        # 健康
+        bars.append(StatusBar(x_pos, y_start + spacing, bar_width, bar_height, 
                               "Health", self.player.health, STAT_MAX, GREEN))
-        bars.append(StatusBar(x_start + spacing * 2, y_start, bar_width, bar_height, 
+        # 饱腹
+        bars.append(StatusBar(x_pos, y_start + spacing * 2, bar_width, bar_height, 
                               "Satiety", self.player.satiety, STAT_MAX, BLUE))
         
         return bars
@@ -64,13 +70,13 @@ class MainScene(Scene):
         self.text_box.set_text(text)
         self.event_data = event_data
         
-        # Create buttons
+        # Create buttons - 按钮放在对话框上方
         self.buttons = []
         if buttons_data:
             button_width = 200
             button_height = 50
             x_start = (WINDOW_WIDTH - button_width * len(buttons_data) - 20 * (len(buttons_data) - 1)) // 2
-            y_pos = 400
+            y_pos = WINDOW_HEIGHT - 280  # 在对话框上方
             
             for i, btn_data in enumerate(buttons_data):
                 x = x_start + i * (button_width + 20)
@@ -99,23 +105,29 @@ class MainScene(Scene):
         """Draw scene"""
         surface.fill(WHITE)
         
-        # Draw status bars
+        # 绘制全屏像素背景
+        draw_room_background(surface, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
+        
+        # Draw status bars (左上角垂直排布)
         for bar in self.status_bars:
             bar.draw(surface)
         
-        # Draw mood and money
+        # Draw mood and money (心情和金钱也放在左上角)
+        y_offset = 20 + 45 * 3  # 在三个状态栏之后
         mood_text = f"Mood: {self.player.get_mood_text()}"
         money_text = f"Money: ${self.player.money}"
+        
+        draw_text(surface, mood_text, 20, y_offset, 24, BLACK)
+        draw_text(surface, money_text, 20, y_offset + 30, 24, BLACK)
+        
+        # Draw day counter (右上角)
         day_text = f"Day {self.player.current_day}/{GAME_DAYS}"
+        draw_text(surface, day_text, WINDOW_WIDTH - 150, 20, 28, RED)
         
-        draw_text(surface, mood_text, 50, 70, 24, BLACK)
-        draw_text(surface, money_text, 250, 70, 24, BLACK)
-        draw_text(surface, day_text, 450, 70, 24, RED)
-        
-        # Draw text box
+        # Draw text box (界面下方)
         self.text_box.draw(surface)
         
-        # Draw buttons
+        # Draw buttons (对话框上方)
         for button in self.buttons:
             button.draw(surface)
 
@@ -251,6 +263,9 @@ class ShoppingScene(Scene):
         """Draw scene"""
         surface.fill(WHITE)
         
+        # Draw background
+        draw_market_background(surface, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
+        
         # Title
         title = f"{self.location}"
         draw_text(surface, title, WINDOW_WIDTH // 2, 30, 36, BLACK, center=True)
@@ -372,6 +387,9 @@ class KitchenScene(Scene):
     def draw(self, surface):
         """Draw scene"""
         surface.fill(WHITE)
+        
+        # Draw background
+        draw_kitchen_background(surface, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
         
         # Title
         draw_text(surface, "Kitchen - Choose Recipe", WINDOW_WIDTH // 2, 30, 36, BLACK, center=True)
