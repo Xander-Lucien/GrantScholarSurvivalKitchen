@@ -36,8 +36,16 @@ class MainScene(Scene):
     def __init__(self, game):
         super().__init__(game)
         self.status_bars = self._create_status_bars()
+        
+        # 创建心情和金钱徽章
+        self.mood_badge = InfoBadge(20, 20 + 45 * 3, 250, 35, "Mood", 
+                                  self.player.get_mood_text(), color=(147, 112, 219), icon_text="Mood")
+        self.money_badge = InfoBadge(20, 20 + 45 * 4, 250, 35, "Money", 
+                                   f"${self.player.money}", color=(218, 165, 32), icon_text="$")
+                                   
         # 对话框移到界面下方
-        self.text_box = TextBox(50, WINDOW_HEIGHT - 220, WINDOW_WIDTH - 100, 150, "", font_size=24)
+        self.text_box = TextBox(50, WINDOW_HEIGHT - 220, WINDOW_WIDTH - 100, 150, "", 
+                              font_size=22, bg_color=(20, 20, 35, 230))
         self.buttons = []
         self.current_text = ""
         self.event_data = None
@@ -52,15 +60,18 @@ class MainScene(Scene):
         bar_height = 35  # 状态栏高度
         spacing = 45  # 垂直间距
         
-        # 体力
+        # 体力 (绿色)
         bars.append(StatusBar(x_pos, y_start, bar_width, bar_height, 
-                              "Stamina", self.player.stamina, STAT_MAX, GREEN))
-        # 健康
+                              "Stamina", self.player.stamina, STAT_MAX, 
+                              bar_color=(50, 205, 50), icon_text="HP"))
+        # 健康 (红色)
         bars.append(StatusBar(x_pos, y_start + spacing, bar_width, bar_height, 
-                              "Health", self.player.health, STAT_MAX, GREEN))
-        # 饱腹
+                              "Health", self.player.health, STAT_MAX, 
+                              bar_color=(255, 80, 80), icon_text="HT"))
+        # 饱腹 (橙色)
         bars.append(StatusBar(x_pos, y_start + spacing * 2, bar_width, bar_height, 
-                              "Satiety", self.player.satiety, STAT_MAX, BLUE))
+                              "Satiety", self.player.satiety, STAT_MAX, 
+                              bar_color=(255, 165, 0), icon_text="FD"))
         
         return bars
     
@@ -100,6 +111,10 @@ class MainScene(Scene):
         self.status_bars[0].update(self.player.stamina)
         self.status_bars[1].update(self.player.health)
         self.status_bars[2].update(self.player.satiety)
+        
+        # 更新徽章
+        self.mood_badge.update(self.player.get_mood_text())
+        self.money_badge.update(f"${self.player.money}")
     
     def draw(self, surface):
         """Draw scene"""
@@ -112,13 +127,9 @@ class MainScene(Scene):
         for bar in self.status_bars:
             bar.draw(surface)
         
-        # Draw mood and money (心情和金钱也放在左上角)
-        y_offset = 20 + 45 * 3  # 在三个状态栏之后
-        mood_text = f"Mood: {self.player.get_mood_text()}"
-        money_text = f"Money: ${self.player.money}"
-        
-        draw_text(surface, mood_text, 20, y_offset, 24, BLACK)
-        draw_text(surface, money_text, 20, y_offset + 30, 24, BLACK)
+        # Draw mood and money badges
+        self.mood_badge.draw(surface)
+        self.money_badge.draw(surface)
         
         # Draw day counter (右上角)
         day_text = f"Day {self.player.current_day}/{GAME_DAYS}"
@@ -424,3 +435,55 @@ class KitchenScene(Scene):
         
         # Draw back button
         self.back_button.draw(surface)
+
+class StoryScene(Scene):
+    """Story playback scene"""
+    
+    def __init__(self, game):
+        super().__init__(game)
+        self.pages = []
+        self.current_page_index = 0
+        self.on_finish_callback = None
+        self.font = pygame.font.Font(None, 32)
+        self.instruction_font = pygame.font.Font(None, 24)
+        
+    def set_story(self, pages, on_finish_callback=None):
+        """Set story content"""
+        self.pages = pages
+        self.current_page_index = 0
+        self.on_finish_callback = on_finish_callback
+        
+    def handle_event(self, event):
+        """Handle events"""
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            # Left click to next page
+            if event.button == 1:
+                self.current_page_index += 1
+                if self.current_page_index >= len(self.pages):
+                    # Story finished
+                    if self.on_finish_callback:
+                        self.on_finish_callback()
+                    self.game.return_from_story()
+                return True
+        return False
+        
+    def draw(self, surface):
+        """Draw scene"""
+        # Black background
+        surface.fill(BLACK)
+        
+        if 0 <= self.current_page_index < len(self.pages):
+            text = self.pages[self.current_page_index]
+            
+            # Draw text centered
+            draw_multiline_text(surface, text, 100, 200, WINDOW_WIDTH - 200, 
+                              font_size=32, color=WHITE)
+            
+            # Draw instruction
+            instruction = "Click to continue..."
+            if self.current_page_index == len(self.pages) - 1:
+                instruction = "Click to finish"
+                
+            text_surf = self.instruction_font.render(instruction, True, GRAY)
+            text_rect = text_surf.get_rect(center=(WINDOW_WIDTH // 2, WINDOW_HEIGHT - 50))
+            surface.blit(text_surf, text_rect)

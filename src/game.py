@@ -9,7 +9,7 @@ import sys
 from .config import *
 from .player import Player
 from .events import EventSystem
-from .scenes import MainScene, ShoppingScene, KitchenScene
+from .scenes import MainScene, ShoppingScene, KitchenScene, StoryScene
 
 
 class Game:
@@ -30,7 +30,9 @@ class Game:
         self.main_scene = MainScene(self)
         self.shopping_scene = ShoppingScene(self)
         self.kitchen_scene = KitchenScene(self)
+        self.story_scene = StoryScene(self)
         self.current_scene = self.main_scene
+        self.previous_scene = None
         
         # Game state
         self.current_period = 0
@@ -141,7 +143,13 @@ class Game:
             messages = self.event_system.apply_results(results)
             
             event_text = event["description"] + "\n\n" + "\n".join(messages)
-            self.show_message(event_text, [{"text": "Sleep", "callback": self.go_sleep, "data": activity_type}])
+            
+            # Check for story pages
+            if "story_pages" in results:
+                self.play_story(results["story_pages"], 
+                              lambda: self.show_message(event_text, [{"text": "Sleep", "callback": self.go_sleep, "data": activity_type}]))
+            else:
+                self.show_message(event_text, [{"text": "Sleep", "callback": self.go_sleep, "data": activity_type}])
         else:
             self.go_sleep(activity_type)
     
@@ -191,7 +199,13 @@ class Game:
             results = self.event_system.process_random_event(event)
             messages = self.event_system.apply_results(results)
             result_text = text + "\n\n" + "\n".join(messages)
-            self.show_message(result_text, [{"text": "Continue", "callback": self.next_period}])
+            
+            # Check for story pages
+            if "story_pages" in results:
+                self.play_story(results["story_pages"], 
+                              lambda: self.show_message(result_text, [{"text": "Continue", "callback": self.next_period}]))
+            else:
+                self.show_message(result_text, [{"text": "Continue", "callback": self.next_period}])
         
         self.current_scene = self.main_scene
     
@@ -202,7 +216,13 @@ class Game:
             results = self.event_system.process_fixed_event(event)
             messages = self.event_system.apply_results(results)
             text = event["description"] + "\n\n" + "\n".join(messages)
-            self.show_message(text, [{"text": "Continue", "callback": self.next_period}])
+            
+            # Check for story pages
+            if "story_pages" in results:
+                self.play_story(results["story_pages"], 
+                              lambda: self.show_message(text, [{"text": "Continue", "callback": self.next_period}]))
+            else:
+                self.show_message(text, [{"text": "Continue", "callback": self.next_period}])
         else:
             # Need to choose
             buttons = []
@@ -225,7 +245,13 @@ class Game:
         messages = self.event_system.apply_results(results)
         
         result_text = "\n".join(messages)
-        self.show_message(result_text, [{"text": "Continue", "callback": self.next_period}])
+        
+        # Check for story pages
+        if "story_pages" in results:
+            self.play_story(results["story_pages"], 
+                          lambda: self.show_message(result_text, [{"text": "Continue", "callback": self.next_period}]))
+        else:
+            self.show_message(result_text, [{"text": "Continue", "callback": self.next_period}])
     
     def handle_fixed_event_choice(self, data):
         """Handle fixed event choice"""
@@ -236,7 +262,13 @@ class Game:
         messages = self.event_system.apply_results(results)
         
         result_text = "\n".join(messages)
-        self.show_message(result_text, [{"text": "Continue", "callback": self.next_period}])
+        
+        # Check for story pages
+        if "story_pages" in results:
+            self.play_story(results["story_pages"], 
+                          lambda: self.show_message(result_text, [{"text": "Continue", "callback": self.next_period}]))
+        else:
+            self.show_message(result_text, [{"text": "Continue", "callback": self.next_period}])
     
     def show_message(self, text, buttons=None):
         """Show message"""
@@ -336,6 +368,18 @@ class Game:
         """Draw game"""
         self.current_scene.draw(self.screen)
         pygame.display.flip()
+    
+    def play_story(self, pages, on_finish=None):
+        """Play story"""
+        self.previous_scene = self.current_scene
+        self.story_scene.set_story(pages, on_finish)
+        self.current_scene = self.story_scene
+        
+    def return_from_story(self):
+        """Return from story scene"""
+        if self.previous_scene:
+            self.current_scene = self.previous_scene
+            self.previous_scene = None
     
     def run(self):
         """Run game main loop"""

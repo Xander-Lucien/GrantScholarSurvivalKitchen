@@ -60,6 +60,20 @@
   "random_events": {
     "Morning": [
       {
+        "name": "Mysterious Diary",
+        "type": "neutral",
+        "description": "You found a mysterious diary in the library.",
+        "options": [],
+        "result": {
+          "story_pages": [
+            "Page 1: You open the diary...",
+            "Page 2: It talks about a legendary chef.",
+            "Page 3: You feel inspired!"
+          ],
+          "mood": 1
+        }
+      },
+      {
         "name": "Overslept",
         "type": "bad",
         "description": "Oh no! Your alarm didn't go off and you overslept!",
