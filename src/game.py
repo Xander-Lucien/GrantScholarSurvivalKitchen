@@ -194,6 +194,7 @@ class Game:
                     "data": {"event": event, "choice": option["id"]}
                 })
             self.main_scene.set_content(text, buttons, event)
+            self.current_scene = self.main_scene
         else:
             # Auto-process event
             results = self.event_system.process_random_event(event)
@@ -204,10 +205,10 @@ class Game:
             if "story_pages" in results:
                 self.play_story(results["story_pages"], 
                               lambda: self.show_message(result_text, [{"text": "Continue", "callback": self.next_period}]))
+                # Don't switch scene here - play_story already switched to story_scene
             else:
                 self.show_message(result_text, [{"text": "Continue", "callback": self.next_period}])
-        
-        self.current_scene = self.main_scene
+                self.current_scene = self.main_scene
     
     def show_fixed_event(self, event):
         """Show fixed event"""
@@ -221,8 +222,10 @@ class Game:
             if "story_pages" in results:
                 self.play_story(results["story_pages"], 
                               lambda: self.show_message(text, [{"text": "Continue", "callback": self.next_period}]))
+                # Don't switch scene here - play_story already switched to story_scene
             else:
                 self.show_message(text, [{"text": "Continue", "callback": self.next_period}])
+                self.current_scene = self.main_scene
         else:
             # Need to choose
             buttons = []
@@ -233,8 +236,7 @@ class Game:
                     "data": {"event": event, "choice": option["id"]}
                 })
             self.main_scene.set_content(event["description"], buttons)
-        
-        self.current_scene = self.main_scene
+            self.current_scene = self.main_scene
     
     def handle_event_choice(self, data):
         """Handle event choice"""

@@ -43,8 +43,8 @@ class MainScene(Scene):
         self.money_badge = InfoBadge(20, 20 + 45 * 4, 250, 35, "Money", 
                                    f"${self.player.money}", color=(218, 165, 32), icon_text="$")
                                    
-        # 对话框移到界面下方
-        self.text_box = TextBox(50, WINDOW_HEIGHT - 220, WINDOW_WIDTH - 100, 150, "", 
+        # 对话框移到界面下方，增加高度以容纳更多文本
+        self.text_box = TextBox(50, WINDOW_HEIGHT - 310, WINDOW_WIDTH - 100, 240, "", 
                               font_size=22, bg_color=(20, 20, 35, 230))
         self.buttons = []
         self.current_text = ""
@@ -87,7 +87,7 @@ class MainScene(Scene):
             button_width = 200
             button_height = 50
             x_start = (WINDOW_WIDTH - button_width * len(buttons_data) - 20 * (len(buttons_data) - 1)) // 2
-            y_pos = WINDOW_HEIGHT - 280  # 在对话框上方
+            y_pos = WINDOW_HEIGHT - 370  # 在对话框上方
             
             for i, btn_data in enumerate(buttons_data):
                 x = x_start + i * (button_width + 20)
