@@ -65,3 +65,7 @@ def get_random_events():
 def get_condition_events():
     """Get condition events"""
     return data_loader.get_all("events").get("condition_events", {})
+
+def get_intro_events():
+    """Get intro events"""
+    return data_loader.get_all("events").get("intro_events", {})

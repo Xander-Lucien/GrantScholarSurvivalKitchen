@@ -5,7 +5,7 @@ Handles fixed events, condition events and random events
 """
 
 import random
-from .config import get_fixed_events, get_random_events, get_condition_events
+from .config import get_fixed_events, get_random_events, get_condition_events, get_intro_events
 
 
 class EventSystem:
@@ -33,6 +33,11 @@ class EventSystem:
                 "result": family_care.get("result", {})
             }
         return None
+    
+    def get_intro_event(self):
+        """Get intro event"""
+        intro_events = get_intro_events()
+        return intro_events.get("diary", None)
     
     def get_random_event(self, period):
         """Get random event"""

@@ -37,8 +37,36 @@ class Game:
         # Game state
         self.current_period = 0
         self.game_state = "playing"  # playing/win/lose
+        self.first_day = True  # Track if this is first day
         
-        # Start game
+        # Show intro event before starting game
+        self.show_intro_event()
+    
+    def show_intro_event(self):
+        """Show intro event on first day"""
+        if not self.first_day:
+            return
+        
+        intro_event = self.event_system.get_intro_event()
+        if intro_event:
+            # Process intro event
+            results = self.event_system.process_random_event(intro_event)
+            messages = self.event_system.apply_results(results)
+            
+            event_text = intro_event["description"] + "\n\n" + "\n".join(messages)
+            
+            # Check for story pages
+            if "story_pages" in results:
+                self.play_story(results["story_pages"], self.start_first_day)
+            else:
+                self.show_message(event_text, [{"text": "Start Game", "callback": self.start_first_day}])
+        else:
+            # No intro event, start normally
+            self.start_new_day()
+    
+    def start_first_day(self, data=None):
+        """Start first day after intro"""
+        self.first_day = False
         self.start_new_day()
     
     def start_new_day(self, data=None):

@@ -1,4 +1,20 @@
 {
+  "intro_events": {
+    "diary": {
+      "name": "Intro",
+      "type": "neutral",
+      "description": "",
+      "options": [],
+      "result": {
+        "story_pages": [
+          "Your name is Grant Scholar. This is the last month of your studies. You're finally about to earn that long-awaited master's degree!",
+          "However, you're facing a life-or-death emergency: you only have $1,500 left in your pocket!",
+          "Find a way to make the most of the last bit of money and struggle through this month!"
+        ],
+        "mood": 1
+      }
+    }
+  },
   "fixed_events": {
     "12": {
       "name": "Graduation Dinner",
@@ -59,20 +75,6 @@
   },
   "random_events": {
     "Morning": [
-      {
-        "name": "Mysterious Diary",
-        "type": "neutral",
-        "description": "You found a mysterious diary in the library.",
-        "options": [],
-        "result": {
-          "story_pages": [
-            "Page 1: You open the diary...",
-            "Page 2: It talks about a legendary chef.",
-            "Page 3: You feel inspired!"
-          ],
-          "mood": 1
-        }
-      },
       {
         "name": "Overslept",
         "type": "bad",
