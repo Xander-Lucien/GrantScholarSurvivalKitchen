@@ -8,6 +8,7 @@ import pygame
 from .config import *
 from .ui import *
 from .backgrounds import *
+from .asset_loader import AssetLoader
 
 
 class Scene:
@@ -35,12 +36,18 @@ class MainScene(Scene):
     
     def __init__(self, game):
         super().__init__(game)
+        
+        # 加载UI背景图片
+        asset_loader = AssetLoader()
+        self.ui_status_bg = asset_loader.load_image("ui/uiStatus.png", convert_alpha=True)
+        
         self.status_bars = self._create_status_bars()
         
-        # 创建心情和金钱徽章
-        self.mood_badge = InfoBadge(20, 20 + 45 * 3, 250, 35, "Mood", 
+        # 创建心情和金钱徽章 - 适配原图尺寸
+        icon_space = 50  # 左侧图标空间
+        self.mood_badge = InfoBadge(20 + icon_space, 28 + 33 * 3, 145, 28, "Mood", 
                                   self.player.get_mood_text(), color=(147, 112, 219), icon_text="Mood")
-        self.money_badge = InfoBadge(20, 20 + 45 * 4, 250, 35, "Money", 
+        self.money_badge = InfoBadge(20 + icon_space, 28 + 33 * 4, 145, 28, "Money", 
                                    f"${self.player.money}", color=(218, 165, 32), icon_text="$")
                                    
         # 对话框移到界面下方，增加高度以容纳更多文本
@@ -52,13 +59,14 @@ class MainScene(Scene):
     
     def _create_status_bars(self):
         """Create status bars"""
-        # 五种属性移到左上角垂直排布
+        # 五种属性移到左上角垂直排布，适配uiStatus.png (215x189)
         bars = []
-        x_pos = 20  # 左侧位置
-        y_start = 20  # 起始Y坐标
-        bar_width = 250  # 状态栏宽度
-        bar_height = 35  # 状态栏高度
-        spacing = 45  # 垂直间距
+        icon_space = 50  # 左侧图标空间
+        x_pos = 20 + icon_space  # 向右移动
+        y_start = 28  # 起始Y坐标
+        bar_width = 145  # 适配原图宽度
+        bar_height = 28  # 状态栏高度
+        spacing = 33  # 垂直间距 (28*5 + 33*4 = 140 + 132 = 172, 加上边距=189)
         
         # 体力 (绿色)
         bars.append(StatusBar(x_pos, y_start, bar_width, bar_height, 
@@ -122,6 +130,10 @@ class MainScene(Scene):
         
         # 绘制全屏像素背景
         draw_room_background(surface, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
+        
+        # 绘制UI状态背景原图（保持比例，放在左上角）
+        if self.ui_status_bg:
+            surface.blit(self.ui_status_bg, (20, 20))
         
         # Draw status bars (左上角垂直排布)
         for bar in self.status_bars:
