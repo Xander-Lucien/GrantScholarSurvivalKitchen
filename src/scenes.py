@@ -45,9 +45,9 @@ class MainScene(Scene):
         
         # 创建心情和金钱徽章 - 适配原图尺寸
         icon_space = 50  # 左侧图标空间
-        self.mood_badge = InfoBadge(20 + icon_space, 28 + 33 * 3, 145, 28, "Mood", 
+        self.mood_badge = InfoBadge(20 + icon_space, 28 + 33 * 1, 145, 28, "Mood",  # 第2个位置
                                   self.player.get_mood_text(), color=(147, 112, 219), icon_text="Mood")
-        self.money_badge = InfoBadge(20 + icon_space, 28 + 33 * 4, 145, 28, "Money", 
+        self.money_badge = InfoBadge(20 + icon_space, 28 + 33 * 4, 145, 28, "Money",  # 第5个位置
                                    f"${self.player.money}", color=(218, 165, 32), icon_text="$")
                                    
         # 对话框移到界面下方，增加高度以容纳更多文本
@@ -68,16 +68,18 @@ class MainScene(Scene):
         bar_height = 28  # 状态栏高度
         spacing = 33  # 垂直间距 (28*5 + 33*4 = 140 + 132 = 172, 加上边距=189)
         
-        # 体力 (绿色)
+        # 体力 (绿色) - 第1个
         bars.append(StatusBar(x_pos, y_start, bar_width, bar_height, 
                               "Stamina", self.player.stamina, STAT_MAX, 
                               bar_color=(50, 205, 50), icon_text="HP"))
-        # 健康 (红色)
-        bars.append(StatusBar(x_pos, y_start + spacing, bar_width, bar_height, 
+        # 心情 (紫色) - 第2个 (原来是InfoBadge，现在改为StatusBar)
+        bars.append(None)  # 心情用InfoBadge显示，占位
+        # 健康 (红色) - 第3个
+        bars.append(StatusBar(x_pos, y_start + spacing * 2, bar_width, bar_height, 
                               "Health", self.player.health, STAT_MAX, 
                               bar_color=(255, 80, 80), icon_text="HT"))
-        # 饱腹 (橙色)
-        bars.append(StatusBar(x_pos, y_start + spacing * 2, bar_width, bar_height, 
+        # 饱腹 (橙色) - 第4个
+        bars.append(StatusBar(x_pos, y_start + spacing * 3, bar_width, bar_height, 
                               "Satiety", self.player.satiety, STAT_MAX, 
                               bar_color=(255, 165, 0), icon_text="FD"))
         
@@ -116,9 +118,12 @@ class MainScene(Scene):
     
     def update(self):
         """Update status bars"""
-        self.status_bars[0].update(self.player.stamina)
-        self.status_bars[1].update(self.player.health)
-        self.status_bars[2].update(self.player.satiety)
+        self.status_bars[0].update(self.player.stamina)  # 体力
+        # status_bars[1] 是 None (心情用InfoBadge)
+        if self.status_bars[2]:  # 健康
+            self.status_bars[2].update(self.player.health)
+        if self.status_bars[3]:  # 饱腹
+            self.status_bars[3].update(self.player.satiety)
         
         # 更新徽章
         self.mood_badge.update(self.player.get_mood_text())
@@ -137,7 +142,8 @@ class MainScene(Scene):
         
         # Draw status bars (左上角垂直排布)
         for bar in self.status_bars:
-            bar.draw(surface)
+            if bar:  # 跳过None（心情位置用InfoBadge显示）
+                bar.draw(surface)
         
         # Draw mood and money badges
         self.mood_badge.draw(surface)
@@ -286,8 +292,13 @@ class ShoppingScene(Scene):
         """Draw scene"""
         surface.fill(WHITE)
         
-        # Draw background
-        draw_market_background(surface, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
+        # Draw background based on location
+        if self.location == "Convenience Store":
+            draw_convenience_store_background(surface, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
+        elif self.location == "Restaurant":
+            draw_restaurant_background(surface, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
+        else:
+            draw_market_background(surface, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT)
         
         # Title
         title = f"{self.location}"
